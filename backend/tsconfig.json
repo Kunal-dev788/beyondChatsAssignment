@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "types": ["node"],
+    "ignoreDeprecations": "6.0",
     "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
