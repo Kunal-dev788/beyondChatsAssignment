@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { connectDB } from "./src/config/db";
-import { scrapeBlogs } from "./src/scraper/scrapeBlogs";
+import { connectDB } from "../config/db"
+import { scrapeBlogs } from "../modules/scraper/scrapeBlogs";
 
 (async () => {
   await connectDB();

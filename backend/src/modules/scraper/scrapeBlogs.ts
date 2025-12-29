@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import { Article } from "../models/Article";
+import { Article } from "../../models/Article";
 
 const BLOG_URL = "https://beyondchats.com/blogs/";
 
@@ -60,7 +60,7 @@ export async function getArticleLinks() {
     });
 
     console.log("filtered article links:", links.length);
-    return links.slice(-5); // oldest 5
+    return links.slice(-5); 
   } catch (err) {
     console.log("error fetching blog page:", err);
     return [];
