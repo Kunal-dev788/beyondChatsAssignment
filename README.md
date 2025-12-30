@@ -257,6 +257,11 @@ Upload the **dist/** folder.
 
 ![Screenshot](./frontend/public/screenshots/article.png)
 
+---
+
+## clean architecture with Flow of the Project
+
+![Screenshot](./frontend/public/images/Project%20Flow.png)
 
 ---
 
