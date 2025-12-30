@@ -3,10 +3,11 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-// Gemini model used for rewriting articles
-const model = genAI.getGenerativeModel({
-  model: "models/gemini-2.5-flash",
-});
+const MODELS = [
+  "models/gemini-2.5-flash",
+  "models/gemini-2.5-pro",
+  "models/gemini-1.5-flash",
+];
 
 export async function rewriteArticle(
   original: string,
@@ -15,60 +16,46 @@ export async function rewriteArticle(
   links: string[]
 ) {
   const prompt = `
-Rewrite the article clearly, in natural human language.
+Rewrite the blog below into a polished, human-like article.
 
-Rules:
-- don't copy text directly from references
-- keep the same meaning
-- improve structure + readability
-- short paragraphs
-- avoid robotic tone
-- markdown friendly
+Goals
+- Maintain meaning (NO hallucinations)
+- Improve readability + structure
+- SEO friendly headings (H2/H3)
+- Short paragraphs
+- Natural tone
+- No emojis, ads, or fluff
+- Do NOT repeat content
+- Format using Markdown
 
-Add this block at the end:
+At the bottom, include:
 
 ## References
-1. ${links[0]}
-2. ${links[1]}
+${links.map((l) => `- ${l}`).join("\n")}
 
-Original:
-"""
+---
+
+Original Article:
 ${original}
-"""
 
-Reference 1:
-"""
-${ref1}
-"""
+Reference Extracts:
+${ref1.slice(0, 500)}
 
-Reference 2:
-"""
-${ref2}
-"""
+${ref2?.slice(0, 500) || ""}
 `;
 
-  try {
-    const result = await model.generateContent(prompt);
-    return result.response.text();
-  } catch (err: any) {
-    // Handle rate limit (429)
-    if (err?.status === 429) {
-      console.log("Rate limit hit — waiting 15s...");
-      await new Promise((r) => setTimeout(r, 15000));
+  for (const m of MODELS) {
+    try {
+      console.log("Trying model:", m);
+      const model = genAI.getGenerativeModel({ model: m });
 
-      // retry once
-      return await rewriteArticle(original, ref1, ref2, links);
+      const res = await model.generateContent(prompt);
+      return res.response.text();
+    } catch (err: any) {
+      console.log("Model failed:", m);
+      console.log("Gemini error:", err?.response ?? err?.message ?? err);
     }
-
-    // Any other error → fallback
-    console.error("Gemini rewrite failed — fallback used", err);
-
-    return `
-${original}
-
-## References
-1. ${links[0]}
-2. ${links[1]}
-`;
   }
+
+  throw new Error("All models failed");
 }
