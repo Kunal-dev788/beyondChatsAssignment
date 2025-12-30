@@ -2,10 +2,10 @@
 
 This project is a **monorepo** containing:
 
-✅ Automated blog scraper
-✅ AI‑powered article updater (Gemini)
-✅ REST API backend
-✅ React + Vite frontend blog viewer
+* ✅ Automated blog scraper
+* ✅ AI‑powered article updater (Gemini)
+* ✅ REST API backend
+* ✅ React + Vite frontend blog viewer
 
 It fetches articles, enhances them using AI, and displays both original & updated versions.
 
@@ -142,10 +142,10 @@ npx ts-node src/jobs/runUpdater.ts
 
 This:
 
-✔ Finds original articles
-✔ Searches the web for context
-✔ Uses Gemini to rewrite
-✔ Saves updated copies
+* ✔ Finds original articles
+* ✔ Searches the web for context
+* ✔ Uses Gemini to rewrite
+* ✔ Saves updated copies
 
 ---
 
