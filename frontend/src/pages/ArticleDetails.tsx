@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
 import he from "he"
 import DOMPurify from "dompurify"
+import { API_URL } from "../config"
 
 type Article = {
   _id: string
@@ -24,7 +25,7 @@ export default function ArticleDetail() {
   useEffect(() => {
     async function fetchArticle() {
       try {
-        const res = await fetch(`http://localhost:5000/api/articles/${id}`)
+        const res = await fetch(`${API_URL}/articles/${id}`)
         const json = await res.json()
         setArticle(json.data || json)
       } catch (err) {
